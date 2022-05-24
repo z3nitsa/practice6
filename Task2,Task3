@@ -1,0 +1,101 @@
+#include <iostream>
+#include <cmath>
+#include <iomanip>
+#include <string>
+using namespace std;
+double calculator(double a, double b, char operation) {
+	switch (operation) {
+	case('+'):
+		return a + b;
+	case('-'):
+		return a - b;
+	case('*'):
+		return a * b;
+	case('/'):
+		double result;
+		try {
+			if (b == 0) {
+				throw runtime_error("divide by Zero");
+			}
+			else {
+				result = a / b;
+			}
+			return result;
+		}
+		catch (runtime_error& ex) {
+			cout << "exception occurred " << endl << ex.what();
+			return -1;
+		}
+	default:
+		cout << "operation did not find";
+		return -1;
+	}
+}
+
+int search(string str, char v) {
+	for (int i = 0; i < str.length(); i++) {
+		if (str[i] == v) {
+			return i;
+		}
+	}
+	return false;
+}
+
+class expression
+{
+private:
+	double a=0, b = 0;
+	char c = '+';
+
+public:
+
+double get_value() {
+	return calculator(a, b, c);
+	}
+	void expression_convert(string st)
+	{
+		//cout << st;
+		if (search(st, '+')) {
+			a = stoi(st.substr(0, search(st, '+')));
+			b = stoi(st.substr(search(st, '+') + 1, st.size() - search(st, '+')));
+			c = '+';
+		}
+		else if (search(st, '-')) {
+			a = stoi(st.substr(0, search(st, '-')));
+			b = stoi(st.substr(search(st, '-') + 1, st.size() - search(st, '-')));
+			c = '-';
+		}
+		else if (search(st, '*')) {
+			a = stoi(st.substr(0, search(st, '*')));
+			b = stoi(st.substr(search(st, '*') + 1, st.size() - search(st, '*')));
+			c = '*';
+		}
+		else if (search(st, '/')) {
+			a = stoi(st.substr(0, search(st, '/')));
+			b = stoi(st.substr(search(st, '/') + 1, st.size() - search(st, '/')));
+			c = '/';
+		}
+		else if (search(st, '^')) {
+			a = stoi(st.substr(0, search(st, '^')));
+			b = stoi(st.substr(search(st, '^') + 1, st.size() - search(st, '^')));
+			c = '^';
+		}
+		else {
+			cout << "Incorrect symbol in expression";
+			return;
+		}
+
+	}
+};
+
+void double_solve(expression expr) {
+	cout << expr.get_value();
+}
+
+int main() {
+	
+	expression e;
+	e.expression_convert("35*7"); // выражение
+	double_solve(e);
+	return 0;
+}
